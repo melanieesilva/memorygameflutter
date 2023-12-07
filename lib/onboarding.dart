@@ -18,19 +18,29 @@ class OnBoarding extends StatelessWidget {
                   textDirection: TextDirection.ltr,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontFamily: "KronaOne"
+                    fontFamily: "Inter",
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    height: 0,
                   ),
                 ),
-                Text(
-                  "MEMORY GAME",
-                  textDirection: TextDirection.ltr,
-                  style: TextStyle(
-                    fontFamily: "KronaOne"
+                Container(
+                  width: 217,
+                  margin: EdgeInsets.only(top: 16),
+                  child: Text(
+                    "MEMORY GAME",
+                    textDirection: TextDirection.ltr,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontFamily: "KronaOne", fontSize: 24),
                   ),
-                )
+                ),
               ]),
               color: Colors.blue,
               width: double.infinity),
+          Container(
+            
+          )
+        
         ],
       ),
     );
