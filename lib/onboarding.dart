@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sort_child_properties_last
+
 import 'package:flutter/material.dart';
 import 'package:memory/common/constants/app_colors.dart';
 
@@ -9,36 +11,28 @@ class OnBoarding extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          Text(
-            "Texto 3",
-            textDirection: TextDirection.ltr,
-          ),
-          Text(
-            "Texto 2",
-            textDirection: TextDirection.ltr,
-          )
+          Container(
+              child: Column(children: <Widget>[
+                Text(
+                  "WELCOME TO THE",
+                  textDirection: TextDirection.ltr,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: "KronaOne"
+                  ),
+                ),
+                Text(
+                  "MEMORY GAME",
+                  textDirection: TextDirection.ltr,
+                  style: TextStyle(
+                    fontFamily: "KronaOne"
+                  ),
+                )
+              ]),
+              color: Colors.blue,
+              width: double.infinity),
         ],
       ),
     );
-
-    // Container(
-    //   decoration: const BoxDecoration(
-    //     color: AppColors.background
-    //   ),
-    //   child: const Center(
-    //     child: Text(
-    //       "Memory Game",
-    //       textDirection: TextDirection.ltr,
-    //       textAlign: TextAlign.center,
-    //       style: TextStyle(
-    //         color: Colors.white,
-    //         fontSize: 36,
-    //         fontFamily:'KronaOne',
-    //         fontWeight: FontWeight.w400,
-    //         height: 0,
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 }
