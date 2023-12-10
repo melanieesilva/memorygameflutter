@@ -13,6 +13,8 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
+    String playerName = widget.playerNames.isNotEmpty ? widget.playerNames[0] : 'Nome do Jogador';
+
     return Container(
       width: 360,
       height: 800,
@@ -61,7 +63,7 @@ class _GameScreenState extends State<GameScreen> {
                         ),
                       ),
                       TextSpan(
-                        text: 'Nome do Jogador',
+                        text: playerName,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 10,
