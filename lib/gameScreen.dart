@@ -26,6 +26,7 @@ class _GameScreenState extends State<GameScreen> {
   int misses = 0;
   int hits = 0;
   late List<String> shuffledCards;
+  int? firstSelectedIndex;
 
   @override
   void initState() {
@@ -39,12 +40,44 @@ class _GameScreenState extends State<GameScreen> {
     return allCards;
   }
 
+  void onCardTap(int index) {
+    setState(() {
+      if (firstSelectedIndex == null) {
+        // Primeira carta selecionada
+        firstSelectedIndex = index;
+        flippedCards[index] = true;
+      } else {
+        // Segunda carta selecionada
+        if (firstSelectedIndex != index) {
+          flippedCards[index] = true;
+
+          // Verifica se as cartas são diferentes
+          if (shuffledCards[firstSelectedIndex!] !=
+              shuffledCards[index]) {
+            // Aguarda um breve momento antes de desvirar as cartas
+            Future.delayed(Duration(seconds: 1), () {
+              flippedCards[firstSelectedIndex!] = false;
+              flippedCards[index] = false;
+              misses++;
+              setState(() {
+                // Limpa o índice da primeira carta selecionada
+                firstSelectedIndex = null;
+              });
+            });
+          } else {
+            // Cartas iguais, incrementa o contador de acertos
+            hits++;
+            firstSelectedIndex = null;
+          }
+        }
+      }
+    });
+  }
+
   Widget buildCard(int index, String cardValue) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          flippedCards[index] = !flippedCards[index];
-        });
+        onCardTap(index);
       },
       child: Container(
         width: 80,
