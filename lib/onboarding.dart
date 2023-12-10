@@ -14,8 +14,8 @@ class _OnBoardingState extends State<OnBoarding> {
   List<TextEditingController> controllers = [TextEditingController()];
   @override
   Widget build(BuildContext context) {
-    double heightScreen = MediaQuery.of(context).size.height;
-    double containerSize = heightScreen * 0.8;
+    // double heightScreen = MediaQuery.of(context).size.height;
+    // double containerSize = heightScreen * 0.8;
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -74,7 +74,7 @@ class _OnBoardingState extends State<OnBoarding> {
                                   decoration: InputDecoration(
                                       labelText: 'Player name ${index + 1}',
                                       labelStyle:
-                                          TextStyle(color: Colors.white),
+                                          TextStyle(color: Color.fromARGB(255, 172, 164, 192)),
                                       border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(100),
@@ -83,13 +83,19 @@ class _OnBoardingState extends State<OnBoarding> {
                                       focusedBorder: OutlineInputBorder(
                                           borderSide:
                                               BorderSide(color: Colors.white),
-                                          borderRadius:
-                                              BorderRadius.circular(100)))),
+                                          borderRadius: BorderRadius.circular(100)
+                                      ), floatingLabelStyle: TextStyle(color: Colors.white)
+                                    ),
+                                  style: TextStyle(
+                                    color: Colors.white
+                                  )
+                                  ),
                             ),
                           ),
                           if (index == 0)
                             IconButton(
-                              icon: Icon(Icons.add),
+                              icon: Icon(Icons.add), 
+                              color: Colors.white,
                               onPressed: () {
                                 setState(() {
                                   if (controllers.length == 1) {
@@ -101,6 +107,7 @@ class _OnBoardingState extends State<OnBoarding> {
                           if (index == 1)
                             IconButton(
                               icon: Icon(Icons.remove),
+                              color: Colors.white,
                               onPressed: () {
                                 setState(() {
                                   if (controllers.length > 1) {
@@ -143,8 +150,10 @@ class _OnBoardingState extends State<OnBoarding> {
                 ],
               ),
               onPressed: () {
+                List<String> playerNames = controllers.map((controller) => controller.text)
+                .toList();
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => GameScreen()
+                    MaterialPageRoute(builder: (context) => GameScreen(playerNames:playerNames)
                 )
               );
               }, 
