@@ -11,9 +11,82 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
+  List<String> cardValues = [
+    "cherry_blossom.png",
+    "closed_umbrella.png",
+    "crystal_ball.png",
+    "nazar_amulet.png",
+    "purple_heart.png",
+    "rainbow.png",
+    "turtle.png",
+    "umbrella_rain.png"
+  ];
+
+  List<Widget> buildCardWidgets() {
+    List<String> allCards = [...cardValues, ...cardValues];
+    
+    return allCards.map((value) {
+      return buildCard(value);
+    }).toList();
+  }
+
+  Widget buildCard(String cardValue) {
+    return Container(
+      width: 68,
+      height: 100,
+      child: Stack(
+        children: [
+          Positioned(
+            left: 0,
+            top: 0,
+            child: Container(
+              width: 68,
+              height: 100,
+              decoration: ShapeDecoration(
+                color: Color(0xFF3C4A63),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            left: 4,
+            top: 46,
+            child: SizedBox(
+              width: 60,
+              child: Text(
+                'MYMG',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color(0xFFB4CEFF),
+                  fontSize: 10,
+                  fontFamily: 'Krona One',
+                  fontWeight: FontWeight.w400,
+                  height: 0,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            left: 24,
+            top: 24,
+            child: Image.asset(
+              'assets/$cardValue',
+              width: 24,
+              height: 24,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    String playerName = widget.playerNames.isNotEmpty ? widget.playerNames[0] : 'Nome do Jogador';
+    String playerName = widget.playerNames.isNotEmpty
+        ? widget.playerNames[0]
+        : 'Nome do Jogador';
 
     return Container(
       width: 360,
@@ -77,201 +150,6 @@ class _GameScreenState extends State<GameScreen> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-              ),
-            ),
-          ),
-          Positioned(
-            left: 106,
-            top: 228,
-            child: Container(
-              width: 68,
-              height: 100,
-              decoration: ShapeDecoration(
-                color: Color(0xFFB4CEFF),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4)),
-              ),
-            ),
-          ),
-          Positioned(
-            left: 187,
-            top: 228,
-            child: Container(
-              width: 68,
-              height: 100,
-              decoration: ShapeDecoration(
-                color: Color(0xFFB4CEFF),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4)),
-              ),
-            ),
-          ),
-          Positioned(
-            left: 268,
-            top: 228,
-            child: Container(
-              width: 68,
-              height: 100,
-              decoration: ShapeDecoration(
-                color: Color(0xFFB4CEFF),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4)),
-              ),
-            ),
-          ),
-          Positioned(
-            left: 25,
-            top: 340,
-            child: Container(
-              width: 68,
-              height: 100,
-              decoration: ShapeDecoration(
-                color: Color(0xFFB4CEFF),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4)),
-              ),
-            ),
-          ),
-          Positioned(
-            left: 106,
-            top: 340,
-            child: Container(
-              width: 68,
-              height: 100,
-              decoration: ShapeDecoration(
-                color: Color(0xFFB4CEFF),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4)),
-              ),
-            ),
-          ),
-          Positioned(
-            left: 187,
-            top: 340,
-            child: Container(
-              width: 68,
-              height: 100,
-              decoration: ShapeDecoration(
-                color: Color(0xFFB4CEFF),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4)),
-              ),
-            ),
-          ),
-          Positioned(
-            left: 268,
-            top: 340,
-            child: Container(
-              width: 68,
-              height: 100,
-              decoration: ShapeDecoration(
-                color: Color(0xFFB4CEFF),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4)),
-              ),
-            ),
-          ),
-          Positioned(
-            left: 25,
-            top: 452,
-            child: Container(
-              width: 68,
-              height: 100,
-              decoration: ShapeDecoration(
-                color: Color(0xFFB4CEFF),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4)),
-              ),
-            ),
-          ),
-          Positioned(
-            left: 106,
-            top: 452,
-            child: Container(
-              width: 68,
-              height: 100,
-              decoration: ShapeDecoration(
-                color: Color(0xFFB4CEFF),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4)),
-              ),
-            ),
-          ),
-          Positioned(
-            left: 187,
-            top: 452,
-            child: Container(
-              width: 68,
-              height: 100,
-              decoration: ShapeDecoration(
-                color: Color(0xFFB4CEFF),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4)),
-              ),
-            ),
-          ),
-          Positioned(
-            left: 268,
-            top: 452,
-            child: Container(
-              width: 68,
-              height: 100,
-              decoration: ShapeDecoration(
-                color: Color(0xFFB4CEFF),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4)),
-              ),
-            ),
-          ),
-          Positioned(
-            left: 25,
-            top: 564,
-            child: Container(
-              width: 68,
-              height: 100,
-              decoration: ShapeDecoration(
-                color: Color(0xFFB4CEFF),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4)),
-              ),
-            ),
-          ),
-          Positioned(
-            left: 106,
-            top: 564,
-            child: Container(
-              width: 68,
-              height: 100,
-              decoration: ShapeDecoration(
-                color: Color(0xFFB4CEFF),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4)),
-              ),
-            ),
-          ),
-          Positioned(
-            left: 187,
-            top: 564,
-            child: Container(
-              width: 68,
-              height: 100,
-              decoration: ShapeDecoration(
-                color: Color(0xFFB4CEFF),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4)),
-              ),
-            ),
-          ),
-          Positioned(
-            left: 268,
-            top: 564,
-            child: Container(
-              width: 68,
-              height: 100,
-              decoration: ShapeDecoration(
-                color: Color(0xFFB4CEFF),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4)),
               ),
             ),
           ),
@@ -378,45 +256,21 @@ class _GameScreenState extends State<GameScreen> {
             ),
           ),
           Positioned(
-            left: 25,
+            left: 24,
             top: 228,
             child: Container(
-              width: 68,
-              height: 100,
-              child: Stack(
-                children: [
-                  Positioned(
-                    left: 0,
-                    top: 0,
-                    child: Container(
-                      width: 68,
-                      height: 100,
-                      decoration: ShapeDecoration(
-                        color: Color(0xFF3C4A63),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4)),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 4,
-                    top: 46,
-                    child: SizedBox(
-                      width: 60,
-                      child: Text(
-                        'MYGM',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Color(0xFFB4CEFF),
-                          fontSize: 10,
-                          fontFamily: 'Krona One',
-                          fontWeight: FontWeight.w400,
-                          height: 0,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+              width: 312,
+              height: 400, // Altura suficiente para exibir todas as cartas
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4, // Número de colunas
+                  crossAxisSpacing: 8.0, // Espaçamento entre colunas
+                  mainAxisSpacing: 8.0, // Espaçamento entre linhas
+                ),
+                itemCount: buildCardWidgets().length,
+                itemBuilder: (context, index) {
+                  return buildCardWidgets()[index];
+                },
               ),
             ),
           ),
