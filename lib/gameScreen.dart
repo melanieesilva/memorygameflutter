@@ -32,6 +32,18 @@ class _GameScreenState extends State<GameScreen> {
   void initState() {
     super.initState();
     shuffledCards = buildShuffledCards();
+
+    turnAllCards();
+
+    Future.delayed(Duration(seconds: 3), () {
+      turnAllCards();
+    });
+  }
+
+   void turnAllCards() {
+    setState(() {
+      flippedCards = List.filled(16, !flippedCards[0]);
+    });
   }
 
   List<String> buildShuffledCards() {
@@ -52,8 +64,7 @@ class _GameScreenState extends State<GameScreen> {
           flippedCards[index] = true;
 
           // Verifica se as cartas são diferentes
-          if (shuffledCards[firstSelectedIndex!] !=
-              shuffledCards[index]) {
+          if (shuffledCards[firstSelectedIndex!] != shuffledCards[index]) {
             // Aguarda um breve momento antes de desvirar as cartas
             Future.delayed(Duration(seconds: 1), () {
               flippedCards[firstSelectedIndex!] = false;
