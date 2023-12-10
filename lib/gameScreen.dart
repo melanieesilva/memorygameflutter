@@ -2,6 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:memory/common/constants/app_colors.dart';
 
+class PlayerStats {
+  int misses;
+  int hits;
+
+  PlayerStats({this.misses = 0, this.hits = 0});
+}
+
 class GameScreen extends StatefulWidget {
   final List<String> playerNames;
   const GameScreen({Key? key, required this.playerNames}) : super(key: key);
@@ -22,9 +29,8 @@ class _GameScreenState extends State<GameScreen> {
     "umbrella_rain.png"
   ];
 
+  List<Map<String, int>> playerStats = [];
   List<bool> flippedCards = List.filled(16, false);
-  int misses = 0;
-  int hits = 0;
   late List<String> shuffledCards;
   int? firstSelectedIndex;
   int currentPlayerIndex = 0;
@@ -32,6 +38,10 @@ class _GameScreenState extends State<GameScreen> {
   @override
   void initState() {
     super.initState();
+    playerStats = List.generate(widget.playerNames.length, (index) {
+      return {'misses': 0, 'hits': 0};
+    });
+
     shuffledCards = buildShuffledCards();
 
     turnAllCards();
@@ -70,7 +80,9 @@ class _GameScreenState extends State<GameScreen> {
             Future.delayed(Duration(seconds: 1), () {
               flippedCards[firstSelectedIndex!] = false;
               flippedCards[index] = false;
-              misses++;
+              playerStats[currentPlayerIndex]!['misses'] =
+    (playerStats[currentPlayerIndex]!['misses'] ?? 0) + 1;
+
               setState(() {
                 // Limpa o índice da primeira carta selecionada
                 firstSelectedIndex = null;
@@ -81,7 +93,9 @@ class _GameScreenState extends State<GameScreen> {
             });
           } else {
             // Cartas iguais, incrementa o contador de acertos
-            hits++;
+            playerStats[currentPlayerIndex]!['hits'] =
+    (playerStats[currentPlayerIndex]!['hits'] ?? 0) + 1;
+
             firstSelectedIndex = null;
           }
         }
@@ -163,7 +177,7 @@ class _GameScreenState extends State<GameScreen> {
                       ),
                     ),
                     Text(
-                      misses.toString(),
+                      playerStats[currentPlayerIndex]['misses'].toString(),
                       style: TextStyle(
                         color: Color(0xFFFF4D4D),
                         fontSize: 20,
@@ -183,7 +197,7 @@ class _GameScreenState extends State<GameScreen> {
                       ),
                     ),
                     Text(
-                      hits.toString(),
+                       playerStats[currentPlayerIndex]['hits'].toString(),
                       style: TextStyle(
                         color: Color(0xFF38F2A4),
                         fontSize: 20,
