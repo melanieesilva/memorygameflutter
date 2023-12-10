@@ -15,6 +15,7 @@ class _GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text("Player Names: ${widget.playerNames.join(', ')}",textDirection: TextDirection.ltr,style: TextStyle(
           color: Colors.white
