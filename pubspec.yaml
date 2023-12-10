@@ -37,7 +37,7 @@ flutter:
           weight: 100
         - asset: fonts/Inter-Light.ttf
           weight: 300
-        - asset: fonts/Inter-ExtraLight.tff
+        - asset: fonts/Inter-ExtraLight.ttf
           weight: 200
         - asset: fonts/Inter-ExtraBold.ttf
           weight: 800
