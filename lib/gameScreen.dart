@@ -22,62 +22,73 @@ class _GameScreenState extends State<GameScreen> {
     "umbrella_rain.png"
   ];
 
+  List<bool> flippedCards = List.filled(16, false);
+
   List<Widget> buildCardWidgets() {
-    List<String> allCards = [...cardValues, ...cardValues];
-    
-    return allCards.map((value) {
-      return buildCard(value);
-    }).toList();
+     List<String> allCards = [...cardValues, ...cardValues];
+
+    return List.generate(allCards.length, (index) {
+      return buildCard(index, allCards[index]);
+    });
   }
 
-  Widget buildCard(String cardValue) {
-    return Container(
-      width: 68,
-      height: 100,
-      child: Stack(
-        children: [
-          Positioned(
-            left: 0,
-            top: 0,
-            child: Container(
-              width: 68,
-              height: 100,
-              decoration: ShapeDecoration(
-                color: Color(0xFF3C4A63),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4),
+  Widget buildCard(int index, String cardValue) {
+    return GestureDetector(
+      onTap: () {
+        // Handle card click
+        setState(() {
+          flippedCards[index] = !flippedCards[index];
+        });
+      },
+      child: Container(
+        width: 68,
+        height: 100,
+        child: Stack(
+          children: [
+            Positioned(
+              left: 0,
+              top: 0,
+              child: Container(
+                width: 68,
+                height: 100,
+                decoration: ShapeDecoration(
+                  color: Color(0xFF3C4A63),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4),
+                  ),
                 ),
               ),
             ),
-          ),
-          Positioned(
-            left: 4,
-            top: 46,
-            child: SizedBox(
-              width: 60,
-              child: Text(
-                'MYMG',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFFB4CEFF),
-                  fontSize: 10,
-                  fontFamily: 'Krona One',
-                  fontWeight: FontWeight.w400,
-                  height: 0,
+            Positioned(
+              left: 4,
+              top: 46,
+              child: SizedBox(
+                width: 60,
+                child: Text(
+                  'MYMG',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color(0xFFB4CEFF),
+                    fontSize: 10,
+                    fontFamily: 'Krona One',
+                    fontWeight: FontWeight.w400,
+                    height: 0,
+                  ),
                 ),
               ),
             ),
-          ),
-          Positioned(
-            left: 24,
-            top: 24,
-            child: Image.asset(
-              'assets/$cardValue',
-              width: 24,
-              height: 24,
-            ),
-          ),
-        ],
+            if (flippedCards[index])
+              Positioned(
+                left: 24,
+                top: 24,
+                child: Image.asset(
+                  'assets/$cardValue',
+                  width: 24,
+                  height: 24,
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
