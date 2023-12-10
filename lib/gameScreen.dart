@@ -25,6 +25,13 @@ class _GameScreenState extends State<GameScreen> {
   List<bool> flippedCards = List.filled(16, false);
   int misses = 0;
   int hits = 0;
+  late List<String> shuffledCards;
+
+  @override
+  void initState() {
+    super.initState();
+    shuffledCards = buildShuffledCards();
+  }
 
   List<String> buildShuffledCards() {
     List<String> allCards = [...cardValues, ...cardValues];
@@ -72,8 +79,6 @@ class _GameScreenState extends State<GameScreen> {
     String playerName = widget.playerNames.isNotEmpty
         ? widget.playerNames[0]
         : 'Nome do Jogador';
-
-    List<String> shuffledCards = buildShuffledCards();
 
     return Scaffold(
       appBar: AppBar(
