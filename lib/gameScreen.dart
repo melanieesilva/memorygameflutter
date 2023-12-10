@@ -27,6 +27,7 @@ class _GameScreenState extends State<GameScreen> {
   int hits = 0;
   late List<String> shuffledCards;
   int? firstSelectedIndex;
+  int currentPlayerIndex = 0;
 
   @override
   void initState() {
@@ -40,7 +41,7 @@ class _GameScreenState extends State<GameScreen> {
     });
   }
 
-   void turnAllCards() {
+  void turnAllCards() {
     setState(() {
       flippedCards = List.filled(16, !flippedCards[0]);
     });
@@ -74,6 +75,9 @@ class _GameScreenState extends State<GameScreen> {
                 // Limpa o índice da primeira carta selecionada
                 firstSelectedIndex = null;
               });
+
+              currentPlayerIndex =
+                  (currentPlayerIndex + 1) % widget.playerNames.length;
             });
           } else {
             // Cartas iguais, incrementa o contador de acertos
@@ -121,7 +125,7 @@ class _GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
     String playerName = widget.playerNames.isNotEmpty
-        ? widget.playerNames[0]
+        ? widget.playerNames[currentPlayerIndex]
         : 'Nome do Jogador';
 
     return Scaffold(
@@ -136,7 +140,7 @@ class _GameScreenState extends State<GameScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'One Player - $playerName',
+              'Player - $playerName',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 16,
