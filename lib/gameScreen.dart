@@ -19,6 +19,14 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
+  bool gameInit = false;
+  int flippedCardsCount = 0;
+  int totalCartas = 0;
+  int? firstSelectedIndex;
+  int currentPlayerIndex = 0;
+  int missCount = 0; //Auxilia no bloqueio da seleção de uma terceira
+  bool findVictory = false;
+
   List<String> cardValues = [
     "cherry_blossom.png",
     "closed_umbrella.png",
@@ -33,8 +41,6 @@ class _GameScreenState extends State<GameScreen> {
   List<Map<String, int>> playerStats = [];
   List<bool> flippedCards = List.filled(16, false);
   late List<String> shuffledCards;
-  int? firstSelectedIndex;
-  int currentPlayerIndex = 0;
 
   @override
   void initState() {
@@ -44,9 +50,13 @@ class _GameScreenState extends State<GameScreen> {
     });
 
     shuffledCards = buildShuffledCards();
+  }
+
+  void playGame() {
+    gameInit = true;
+    flippedCardsCount = 0;
 
     turnAllCards();
-
     Future.delayed(Duration(seconds: 3), () {
       turnAllCards();
     });
@@ -65,11 +75,18 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void onCardTap(int index) {
+    if (gameInit == false) return;
+    if (flippedCards[index])
+      return; //Evita o incremento dos Hits quando um par já foi encontrado
+    if (missCount == 1) return;
+
     setState(() {
       if (firstSelectedIndex == null) {
         // Primeira carta selecionada
         firstSelectedIndex = index;
         flippedCards[index] = true;
+        flippedCardsCount++;
+        totalCartas = flippedCardsCount;
       } else {
         // Segunda carta selecionada
         if (firstSelectedIndex != index) {
@@ -77,6 +94,7 @@ class _GameScreenState extends State<GameScreen> {
 
           // Verifica se as cartas são diferentes
           if (shuffledCards[firstSelectedIndex!] != shuffledCards[index]) {
+            missCount = 1;
             // Aguarda um breve momento antes de desvirar as cartas
             Future.delayed(Duration(seconds: 1), () {
               flippedCards[firstSelectedIndex!] = false;
@@ -87,10 +105,12 @@ class _GameScreenState extends State<GameScreen> {
               setState(() {
                 // Limpa o índice da primeira carta selecionada
                 firstSelectedIndex = null;
+                flippedCardsCount = 0;
               });
 
               currentPlayerIndex =
                   (currentPlayerIndex + 1) % widget.playerNames.length;
+              missCount = 0;
             });
           } else {
             // Cartas iguais, incrementa o contador de acertos
@@ -98,6 +118,7 @@ class _GameScreenState extends State<GameScreen> {
                 (playerStats[currentPlayerIndex]!['hits'] ?? 0) + 1;
 
             firstSelectedIndex = null;
+            flippedCardsCount = 0;
           }
         }
       }
@@ -125,14 +146,12 @@ class _GameScreenState extends State<GameScreen> {
                   height: 40,
                   fit: BoxFit.contain,
                 )
-              : Container()
-              
-              // Image.asset(
-              //     'assets/images/logo_memory_game.png',
-              //     width: 40,
-              //     height: 40,
-              //     fit: BoxFit.contain,
-              //   ), // Mostra a capa da carta se não estiver virada / No meu ainda não funciona, provavelmente problema no build tbm
+              : Image.asset(
+                  'assets/images/img-capa.png',
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.contain,
+                ), // Mostra a capa da carta se não estiver virada / No meu ainda não funciona, provavelmente problema no build tbm
         ),
       ),
     );
@@ -156,7 +175,7 @@ class _GameScreenState extends State<GameScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              padding: EdgeInsets.only(top: 16, left: 24,bottom:12),
+              padding: EdgeInsets.only(top: 16, left: 24, bottom: 12),
               child: Row(children: <Widget>[
                 SizedBox(
                   child: IconButton(
@@ -271,56 +290,55 @@ class _GameScreenState extends State<GameScreen> {
               ),
             ),
             Container(
-                child: Center(
-                  child: Expanded(
-                    child: Container(
-                        width: 312,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100.0),
-                          color: AppColors.inputBack,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(12),
-                              // color: Colors.blue,
-                              child: IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(Icons.play_arrow,
-                                      color: Colors.white)),
-                            ),
-                            Container(
-                              padding: EdgeInsets.all(12),
-                              // color: Colors.green,
-                              child: IconButton(
-                                  onPressed: () {},
-                                  icon:
-                                      Icon(Icons.update, color: Colors.white)),
-                            ),
-                            Container(
-                                padding: EdgeInsets.all(12),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.timer,
-                                      color: Colors.white,
-                                    ),
-                                    SizedBox(width: 12),
-                                    Text("00:00:00",
-                                        textDirection: TextDirection.ltr,
-                                        style: TextStyle(
-                                            fontFamily: "Inter",
-                                            color: Colors.white))
-                                  ],
-                                )),
-                          ],
-                        )),
+              padding: EdgeInsets.only(top: 16),
+              child:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100.00),
+                    color: AppColors.inputBack,
                   ),
-                ),
-                padding: EdgeInsets.all(16),
-                width: double.infinity)
+                  width: 300,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(12),
+                        // color: Colors.blue,
+                        child: IconButton(
+                            onPressed: () {
+                              playGame();
+                            },
+                            icon: Icon(Icons.play_arrow, color: Colors.white)),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(12),
+                        // color: Colors.green,
+                        child: IconButton(
+                            onPressed: () {},
+                            icon: Icon(Icons.update, color: Colors.white)),
+                      ),
+                      Container(
+                          padding: EdgeInsets.all(12),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.timer,
+                                color: Colors.white,
+                              ),
+                              SizedBox(width: 12),
+                              Text("$totalCartas",
+                                  textDirection: TextDirection.ltr,
+                                  style: TextStyle(
+                                      fontFamily: "Inter", color: Colors.white))
+                            ],
+                          )),
+                    ],
+                  ),
+                )
+              ]),
+            )
           ],
         ),
       ),
