@@ -1,6 +1,7 @@
-// ignore_for_file: prefer_const_constructors, sort_child_properties_last
+// ignore_for_file: prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, sized_box_for_whitespace
 import 'package:flutter/material.dart';
 import 'package:memory/common/constants/app_colors.dart';
+import 'package:memory/onboarding.dart';
 
 class PlayerStats {
   int misses;
@@ -124,7 +125,14 @@ class _GameScreenState extends State<GameScreen> {
                   height: 40,
                   fit: BoxFit.contain,
                 )
-              : Container(), // Oculta a imagem se não estiver virada
+              : Container()
+              
+              // Image.asset(
+              //     'assets/images/logo_memory_game.png',
+              //     width: 40,
+              //     height: 40,
+              //     fit: BoxFit.contain,
+              //   ), // Mostra a capa da carta se não estiver virada / No meu ainda não funciona, provavelmente problema no build tbm
         ),
       ),
     );
@@ -142,16 +150,46 @@ class _GameScreenState extends State<GameScreen> {
     //     ? widget.playerNames[currentPlayerIndex]
     //     : 'Nome do Jogador';
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Memory Game'),
-        centerTitle: true,
-        backgroundColor: Color(0xFF202838),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Container(
+              padding: EdgeInsets.only(top: 16, left: 24,bottom:12),
+              child: Row(children: <Widget>[
+                SizedBox(
+                  child: IconButton(
+                      icon: Icon(Icons.arrow_back_ios),
+                      color: Colors.white,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => OnBoarding()));
+                      }),
+                ),
+                SizedBox(width: 90),
+                Container(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                          width: 180,
+                          child: Text(
+                            "Memory Game",
+                            textDirection: TextDirection.ltr,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontFamily: "KronaOne",
+                                fontSize: 20,
+                                color: Colors.white),
+                          )),
+                    ],
+                  ),
+                )
+              ]),
+              // color: Colors.white
+            ),
             if (widget.playerNames.length == 1)
               Text(
                 "One Player -  ${widget.playerNames[0]}",
@@ -232,6 +270,57 @@ class _GameScreenState extends State<GameScreen> {
                 },
               ),
             ),
+            Container(
+                child: Center(
+                  child: Expanded(
+                    child: Container(
+                        width: 312,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100.0),
+                          color: AppColors.inputBack,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(12),
+                              // color: Colors.blue,
+                              child: IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(Icons.play_arrow,
+                                      color: Colors.white)),
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(12),
+                              // color: Colors.green,
+                              child: IconButton(
+                                  onPressed: () {},
+                                  icon:
+                                      Icon(Icons.update, color: Colors.white)),
+                            ),
+                            Container(
+                                padding: EdgeInsets.all(12),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.timer,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(width: 12),
+                                    Text("00:00:00",
+                                        textDirection: TextDirection.ltr,
+                                        style: TextStyle(
+                                            fontFamily: "Inter",
+                                            color: Colors.white))
+                                  ],
+                                )),
+                          ],
+                        )),
+                  ),
+                ),
+                padding: EdgeInsets.all(16),
+                width: double.infinity)
           ],
         ),
       ),
