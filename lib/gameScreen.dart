@@ -20,8 +20,6 @@ class GameScreen extends StatefulWidget {
 
 class _GameScreenState extends State<GameScreen> {
   bool gameInit = false;
-  int flippedCardsCount = 0;
-  int totalCartas = 0;
   int? firstSelectedIndex;
   int currentPlayerIndex = 0;
   int missCount = 0; //Auxilia no bloqueio da seleção de uma terceira
@@ -54,7 +52,6 @@ class _GameScreenState extends State<GameScreen> {
 
   void playGame() {
     gameInit = true;
-    flippedCardsCount = 0;
 
     turnAllCards();
     Future.delayed(Duration(seconds: 3), () {
@@ -85,8 +82,7 @@ class _GameScreenState extends State<GameScreen> {
         // Primeira carta selecionada
         firstSelectedIndex = index;
         flippedCards[index] = true;
-        flippedCardsCount++;
-        totalCartas = flippedCardsCount;
+      
       } else {
         // Segunda carta selecionada
         if (firstSelectedIndex != index) {
@@ -105,7 +101,6 @@ class _GameScreenState extends State<GameScreen> {
               setState(() {
                 // Limpa o índice da primeira carta selecionada
                 firstSelectedIndex = null;
-                flippedCardsCount = 0;
               });
 
               currentPlayerIndex =
@@ -118,7 +113,6 @@ class _GameScreenState extends State<GameScreen> {
                 (playerStats[currentPlayerIndex]!['hits'] ?? 0) + 1;
 
             firstSelectedIndex = null;
-            flippedCardsCount = 0;
           }
         }
       }
@@ -328,7 +322,7 @@ class _GameScreenState extends State<GameScreen> {
                                 color: Colors.white,
                               ),
                               SizedBox(width: 12),
-                              Text("$totalCartas",
+                              Text("00:00:00",
                                   textDirection: TextDirection.ltr,
                                   style: TextStyle(
                                       fontFamily: "Inter", color: Colors.white))
