@@ -81,7 +81,7 @@ class _GameScreenState extends State<GameScreen> {
               flippedCards[firstSelectedIndex!] = false;
               flippedCards[index] = false;
               playerStats[currentPlayerIndex]!['misses'] =
-    (playerStats[currentPlayerIndex]!['misses'] ?? 0) + 1;
+                  (playerStats[currentPlayerIndex]!['misses'] ?? 0) + 1;
 
               setState(() {
                 // Limpa o índice da primeira carta selecionada
@@ -94,7 +94,7 @@ class _GameScreenState extends State<GameScreen> {
           } else {
             // Cartas iguais, incrementa o contador de acertos
             playerStats[currentPlayerIndex]!['hits'] =
-    (playerStats[currentPlayerIndex]!['hits'] ?? 0) + 1;
+                (playerStats[currentPlayerIndex]!['hits'] ?? 0) + 1;
 
             firstSelectedIndex = null;
           }
@@ -138,10 +138,9 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String playerName = widget.playerNames.isNotEmpty
-        ? widget.playerNames[currentPlayerIndex]
-        : 'Nome do Jogador';
-
+    // String playerName = widget.playerNames.isNotEmpty
+    //     ? widget.playerNames[currentPlayerIndex]
+    //     : 'Nome do Jogador';
     return Scaffold(
       appBar: AppBar(
         title: Text('Memory Game'),
@@ -153,15 +152,26 @@ class _GameScreenState extends State<GameScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              'Player - $playerName',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+            if (widget.playerNames.length == 1)
+              Text(
+                "One Player -  ${widget.playerNames[0]}",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
-            ),
+            if (widget.playerNames.length > 1)
+              Text(
+                "Two Player",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
             SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -197,7 +207,7 @@ class _GameScreenState extends State<GameScreen> {
                       ),
                     ),
                     Text(
-                       playerStats[currentPlayerIndex]['hits'].toString(),
+                      playerStats[currentPlayerIndex]['hits'].toString(),
                       style: TextStyle(
                         color: Color(0xFF38F2A4),
                         fontSize: 20,
