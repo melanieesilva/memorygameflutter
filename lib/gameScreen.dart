@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:memory/common/constants/app_colors.dart';
 import 'package:memory/onboarding.dart';
+import 'package:memory/victoryScreen.dart';
 
 class PlayerStats {
   int misses;
@@ -52,7 +53,7 @@ class _GameScreenState extends State<GameScreen> {
 
   void playGame() {
     gameInit = true;
-
+    currentPlayerIndex = 0;
     turnAllCards();
     Future.delayed(Duration(seconds: 3), () {
       turnAllCards();
@@ -82,7 +83,6 @@ class _GameScreenState extends State<GameScreen> {
         // Primeira carta selecionada
         firstSelectedIndex = index;
         flippedCards[index] = true;
-      
       } else {
         // Segunda carta selecionada
         if (firstSelectedIndex != index) {
@@ -215,7 +215,7 @@ class _GameScreenState extends State<GameScreen> {
               ),
             if (widget.playerNames.length > 1)
               Text(
-                "Two Player",
+                "Turn: ${widget.playerNames[currentPlayerIndex]}",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
