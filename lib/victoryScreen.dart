@@ -14,7 +14,7 @@ class VictoryScreen extends StatelessWidget {
     Key? key,
     required this.winnerName,
     required this.playerStats,
-    required this.winnerStats, // Certifique-se de incluir winnerStats no construtor
+    required this.winnerStats, 
     required this.playerNames,
   }) : super(key: key);
 

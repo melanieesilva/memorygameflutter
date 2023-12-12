@@ -27,7 +27,8 @@ class _GameScreenState extends State<GameScreen> {
   int? firstSelectedIndex;
   int currentPlayerIndex = 0;
   int missCount = 0; //Auxilia no bloqueio da seleção de uma terceira
-  bool findVictory = false;
+  bool pausedGame = false;
+  int countPaused = 0;
 
   List<String> cardValues = [
     "cherry_blossom.png",
@@ -58,6 +59,8 @@ class _GameScreenState extends State<GameScreen> {
   void playGame() {
     gameInit = true;
     currentPlayerIndex = 0;
+    pausedGame = false;
+    if (countPaused >= 1) return;
     turnAllCards();
     Future.delayed(Duration(seconds: 3), () {
       turnAllCards();
@@ -65,11 +68,21 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void resetGame() {
+    pausedGame = false;
+    _secondsElapsed = 0;
     shuffledCards = buildShuffledCards();
     playGame();
     playerStats = List.generate(widget.playerNames.length, (index) {
       return {'misses': 0, 'hits': 0};
     });
+  }
+
+  void pauseGame() {
+    setState(() {
+      pausedGame = true;
+      countPaused++;
+    });
+    _stopTimer();
   }
 
   void turnAllCards() {
@@ -125,6 +138,7 @@ class _GameScreenState extends State<GameScreen> {
     if (flippedCards[index])
       return; //Evita o incremento dos Hits quando um par já foi encontrado
     if (missCount == 1) return;
+    if (pausedGame == true) return;
 
     setState(() {
       if (firstSelectedIndex == null) {
@@ -225,7 +239,7 @@ class _GameScreenState extends State<GameScreen> {
     });
   }
 
-    void _stopTimer() {
+  void _stopTimer() {
     _timer.cancel(); // Cancela o timer
   }
 
@@ -376,7 +390,7 @@ class _GameScreenState extends State<GameScreen> {
                     borderRadius: BorderRadius.circular(100.00),
                     color: AppColors.inputBack,
                   ),
-                  width: 300,
+                  width: 320,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -398,6 +412,15 @@ class _GameScreenState extends State<GameScreen> {
                               resetGame();
                             },
                             icon: Icon(Icons.update, color: Colors.white)),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(12),
+                        // color: Colors.green,
+                        child: IconButton(
+                            onPressed: () {
+                              pauseGame();
+                            },
+                            icon: Icon(Icons.pause, color: Colors.white)),
                       ),
                       Container(
                         padding: EdgeInsets.all(12),
