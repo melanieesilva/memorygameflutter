@@ -60,10 +60,41 @@ class _GameScreenState extends State<GameScreen> {
     });
   }
 
+  void resetGame() {
+    shuffledCards = buildShuffledCards();
+    playGame();
+    playerStats = List.generate(widget.playerNames.length, (index) {
+      return {'misses': 0, 'hits': 0};
+    });
+  }
+
   void turnAllCards() {
     setState(() {
       flippedCards = List.filled(16, !flippedCards[0]);
     });
+  }
+
+  void checkWinCondition() {
+    final int maxHits = 8; // Número necessário para vencer
+    for (int i = 0; i < playerStats.length; i++) {
+      if (playerStats[i]['hits'] == maxHits) {
+        showVictoryScreen(widget.playerNames[currentPlayerIndex]);
+        break;
+      }
+    }
+  }
+
+  void showVictoryScreen(String winnerName) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => VictoryScreen(
+          winnerName: widget
+              .playerNames[currentPlayerIndex], // Nome do jogador vencedor
+          playerStats: playerStats, // Dados dos jogadores
+        ),
+      ),
+    );
   }
 
   List<String> buildShuffledCards() {
@@ -117,6 +148,9 @@ class _GameScreenState extends State<GameScreen> {
         }
       }
     });
+    if (gameInit) {
+      checkWinCondition();
+    }
   }
 
   Widget buildCard(int index, String cardValue) {
@@ -309,7 +343,9 @@ class _GameScreenState extends State<GameScreen> {
                         padding: EdgeInsets.all(12),
                         // color: Colors.green,
                         child: IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              resetGame();
+                            },
                             icon: Icon(Icons.update, color: Colors.white)),
                       ),
                       Container(
