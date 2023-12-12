@@ -59,8 +59,9 @@ class _GameScreenState extends State<GameScreen> {
   void playGame() {
     gameInit = true;
     currentPlayerIndex = 0;
-    pausedGame = false;
-    if (countPaused >= 1) return;
+    pausedGame = false; //Despausa o jogo, permitindo que o jogador clique nas cartas
+    if (countPaused >= 1) return; //Caso o jogador tenha clicado em Pause, um contador é incrementado.
+    //Então se Pause já foi clicado 1 vez ou mais, as cartas não podem ser viradas novamente.
     turnAllCards();
     Future.delayed(Duration(seconds: 3), () {
       turnAllCards();
@@ -68,7 +69,7 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void resetGame() {
-    pausedGame = false;
+    pausedGame = false; //Despausa o jogo, para o caso em que ele esteja pausado
     _secondsElapsed = 0;
     shuffledCards = buildShuffledCards();
     playGame();
