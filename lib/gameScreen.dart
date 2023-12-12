@@ -60,6 +60,14 @@ class _GameScreenState extends State<GameScreen> {
     });
   }
 
+  void resetGame(){
+      shuffledCards = buildShuffledCards();
+      playGame();
+      playerStats = List.generate(widget.playerNames.length, (index) {
+        return {'misses': 0, 'hits': 0};
+    });
+  }
+
   void turnAllCards() {
     setState(() {
       flippedCards = List.filled(16, !flippedCards[0]);
@@ -309,7 +317,9 @@ class _GameScreenState extends State<GameScreen> {
                         padding: EdgeInsets.all(12),
                         // color: Colors.green,
                         child: IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              resetGame();
+                            },
                             icon: Icon(Icons.update, color: Colors.white)),
                       ),
                       Container(
