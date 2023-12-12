@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, sized_box_for_whitespace
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:memory/common/constants/app_colors.dart';
 import 'package:memory/onboarding.dart';
@@ -45,6 +47,7 @@ class _GameScreenState extends State<GameScreen> {
   @override
   void initState() {
     super.initState();
+
     playerStats = List.generate(widget.playerNames.length, (index) {
       return {'misses': 0, 'hits': 0};
     });
@@ -205,6 +208,39 @@ class _GameScreenState extends State<GameScreen> {
     });
   }
 
+  late Timer _timer;
+  int _secondsElapsed = 0;
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        _secondsElapsed++;
+      });
+    });
+  }
+
+    void _stopTimer() {
+    _timer.cancel(); // Cancela o timer
+  }
+
+  String _formatTime(int seconds) {
+    int hours = seconds ~/ 3600;
+    int minutes = (seconds ~/ 60) % 60;
+    int secs = seconds % 60;
+
+    String hoursStr = (hours % 24).toString().padLeft(2, '0');
+    String minutesStr = minutes.toString().padLeft(2, '0');
+    String secondsStr = secs.toString().padLeft(2, '0');
+
+    return '$hoursStr:$minutesStr:$secondsStr';
+  }
+
   @override
   Widget build(BuildContext context) {
     // String playerName = widget.playerNames.isNotEmpty
@@ -350,6 +386,7 @@ class _GameScreenState extends State<GameScreen> {
                         child: IconButton(
                             onPressed: () {
                               playGame();
+                              _startTimer();
                             },
                             icon: Icon(Icons.play_arrow, color: Colors.white)),
                       ),
@@ -363,21 +400,25 @@ class _GameScreenState extends State<GameScreen> {
                             icon: Icon(Icons.update, color: Colors.white)),
                       ),
                       Container(
-                          padding: EdgeInsets.all(12),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.timer,
+                        padding: EdgeInsets.all(12),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.timer,
+                              color: Colors.white,
+                            ),
+                            SizedBox(width: 12),
+                            Text(
+                              _formatTime(_secondsElapsed),
+                              style: TextStyle(
+                                fontFamily: "Inter",
                                 color: Colors.white,
                               ),
-                              SizedBox(width: 12),
-                              Text("00:00:00",
-                                  textDirection: TextDirection.ltr,
-                                  style: TextStyle(
-                                      fontFamily: "Inter", color: Colors.white))
-                            ],
-                          )),
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 )
