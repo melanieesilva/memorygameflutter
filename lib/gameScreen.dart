@@ -69,7 +69,6 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void resetGame() {
-    pausedGame = false; //Despausa o jogo, para o caso em que ele esteja pausado
     _secondsElapsed = 0;
     shuffledCards = buildShuffledCards();
     playGame();
