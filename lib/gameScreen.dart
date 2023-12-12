@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:memory/common/constants/app_colors.dart';
 import 'package:memory/onboarding.dart';
 import 'package:memory/victoryScreen.dart';
+import 'package:memory/empate.dart';
 
 class PlayerStats {
   int misses;
@@ -74,40 +75,41 @@ class _GameScreenState extends State<GameScreen> {
     });
   }
 
+  void checkWinCondition() {
+    int hitsPlayer1 = playerStats[0]['hits'] ?? 0;
+    int hitsPlayer2 = playerStats.length > 1 ? playerStats[1]['hits'] ?? 0 : 0;
 
+    int totalHits = hitsPlayer1 + hitsPlayer2;
 
-void checkWinCondition() {
-  int hitsPlayer1 = playerStats[0]['hits'] ?? 0;
-  int hitsPlayer2 = playerStats.length > 1 ? playerStats[1]['hits'] ?? 0 : 0;
-
-  int totalHits = hitsPlayer1 + hitsPlayer2;
-
-  if (totalHits == shuffledCards.length ~/ 2) {
-    if (hitsPlayer1 > hitsPlayer2) {
-      showVictoryScreen(0); // Player 1 é o vencedor
-    } else if (hitsPlayer2 > hitsPlayer1) {
-      showVictoryScreen(1); // Player 2 é o vencedor
-    } else {
-      // Em caso de empate, poderia haver uma lógica para lidar com isso
-      // Por exemplo, um novo jogo, ou outro critério de desempate
+    if (totalHits == shuffledCards.length ~/ 2) {
+      if (hitsPlayer1 > hitsPlayer2) {
+        showVictoryScreen(0); // Player 1 é o vencedor
+      } else if (hitsPlayer2 > hitsPlayer1) {
+        showVictoryScreen(1); // Player 2 é o vencedor
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Empate(),
+          ),
+        );
+      }
     }
   }
-}
 
   void showVictoryScreen(int winningPlayerIndex) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => VictoryScreen(
-        winnerName: widget.playerNames[winningPlayerIndex],
-        playerStats: playerStats,
-        winnerStats: playerStats[winningPlayerIndex],
-        playerNames: widget.playerNames,
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => VictoryScreen(
+          winnerName: widget.playerNames[winningPlayerIndex],
+          playerStats: playerStats,
+          winnerStats: playerStats[winningPlayerIndex],
+          playerNames: widget.playerNames,
+        ),
       ),
-    ),
-  );
-}
-
+    );
+  }
 
   List<String> buildShuffledCards() {
     List<String> allCards = [...cardValues, ...cardValues];
