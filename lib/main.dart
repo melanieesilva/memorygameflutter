@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:memory/common/constants/app_colors.dart';
 import 'package:memory/onboarding.dart';
-import 'package:memory/victoryScreen.dart';
 
 void main() {
   runApp(const MyApp());
