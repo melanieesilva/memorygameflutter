@@ -8,4 +8,6 @@ class AppColors {
   static const Color subtitle = Color(0xFF798CAE);
   static const Color backCard = Color(0xFFB4CEFF);
   static const Color btnColor = Color(0xFF004CDD);
+  static const Color danger = Color(0xFFFF4D4D);
+  static const Color success = Color(0xFF38F2A4);
 }
