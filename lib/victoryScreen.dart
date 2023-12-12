@@ -7,15 +7,20 @@ import 'package:memory/common/constants/app_colors.dart';
 class VictoryScreen extends StatelessWidget {
   final String winnerName;
   final List<Map<String, int>> playerStats;
+  final Map<String, int> winnerStats;
+  final List<String> playerNames;
 
   const VictoryScreen({
     Key? key,
     required this.winnerName,
     required this.playerStats,
+    required this.winnerStats, // Certifique-se de incluir winnerStats no construtor
+    required this.playerNames,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    int winnerIndex = playerNames.indexOf(winnerName);
     return Scaffold(
         body: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -57,7 +62,7 @@ class VictoryScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 16),
                       Container(
-                        child: Text("Maria",
+                        child: Text(winnerName,
                             textDirection: TextDirection.ltr,
                             style: TextStyle(
                                 color: Colors.white,
@@ -77,13 +82,13 @@ class VictoryScreen extends StatelessWidget {
                                   ),
                                   child: Row(
                                     children: [
-                                      Text("Misses",
+                                      Text("Misses  ",
                                           style: TextStyle(
                                               color: AppColors.danger,
                                               fontFamily: "Inter",
                                               fontWeight: FontWeight.w500)),
                                       SizedBox(width: 12),
-                                      Text("4",
+                                      Text("${playerStats[winnerIndex]['misses']}",
                                           style: TextStyle(
                                               color: AppColors.danger,
                                               fontFamily: "Inter",
@@ -105,7 +110,7 @@ class VictoryScreen extends StatelessWidget {
                                               fontFamily: "Inter",
                                               fontWeight: FontWeight.w500)),
                                       SizedBox(width: 12),
-                                      Text("4",
+                                      Text("${playerStats[winnerIndex]['hits']}",
                                           style: TextStyle(
                                               color: AppColors.success,
                                               fontFamily: "Inter",

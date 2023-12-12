@@ -74,28 +74,40 @@ class _GameScreenState extends State<GameScreen> {
     });
   }
 
-  void checkWinCondition() {
-    final int maxHits = 8; // Número necessário para vencer
-    for (int i = 0; i < playerStats.length; i++) {
-      if (playerStats[i]['hits'] == maxHits) {
-        showVictoryScreen(widget.playerNames[currentPlayerIndex]);
-        break;
-      }
+
+
+void checkWinCondition() {
+  int hitsPlayer1 = playerStats[0]['hits'] ?? 0;
+  int hitsPlayer2 = playerStats.length > 1 ? playerStats[1]['hits'] ?? 0 : 0;
+
+  int totalHits = hitsPlayer1 + hitsPlayer2;
+
+  if (totalHits == shuffledCards.length ~/ 2) {
+    if (hitsPlayer1 > hitsPlayer2) {
+      showVictoryScreen(0); // Player 1 é o vencedor
+    } else if (hitsPlayer2 > hitsPlayer1) {
+      showVictoryScreen(1); // Player 2 é o vencedor
+    } else {
+      // Em caso de empate, poderia haver uma lógica para lidar com isso
+      // Por exemplo, um novo jogo, ou outro critério de desempate
     }
   }
+}
 
-  void showVictoryScreen(String winnerName) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => VictoryScreen(
-          winnerName: widget
-              .playerNames[currentPlayerIndex], // Nome do jogador vencedor
-          playerStats: playerStats, // Dados dos jogadores
-        ),
+  void showVictoryScreen(int winningPlayerIndex) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => VictoryScreen(
+        winnerName: widget.playerNames[winningPlayerIndex],
+        playerStats: playerStats,
+        winnerStats: playerStats[winningPlayerIndex],
+        playerNames: widget.playerNames,
       ),
-    );
-  }
+    ),
+  );
+}
+
 
   List<String> buildShuffledCards() {
     List<String> allCards = [...cardValues, ...cardValues];
